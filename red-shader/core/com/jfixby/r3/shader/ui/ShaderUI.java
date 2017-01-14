@@ -16,7 +16,7 @@ import com.jfixby.r3.ext.api.scene2d.Scene;
 import com.jfixby.r3.ext.api.scene2d.Scene2D;
 import com.jfixby.r3.ext.api.scene2d.Scene2DSpawningConfig;
 import com.jfixby.r3.shader.pack.PackConfig;
-import com.jfixby.r3.shader.pack.Repacker;
+import com.jfixby.r3.shader.pack.ShaderRepacker;
 import com.jfixby.rana.api.asset.AssetsConsumer;
 import com.jfixby.rana.api.asset.AssetsManager;
 import com.jfixby.rana.api.pkg.PackageReaderListener;
@@ -83,7 +83,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 	private void repack () {
 		ShaderUI.this.recorder.stop();
 		try {
-			Repacker.repack();
+			ShaderRepacker.repack();
 
 		} catch (final IOException e) {
 			e.printStackTrace();
