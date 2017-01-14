@@ -29,7 +29,7 @@ public class PrintDependencies {
 		ignore.clear();
 
 		{
-			final EclipseProjectInfo info = workspace_settings.getProjectInfo("red-parallax");
+			final EclipseProjectInfo info = workspace_settings.getProjectInfo("red-shader");
 // info.getDependencies().print();
 
 			deps.add(info);

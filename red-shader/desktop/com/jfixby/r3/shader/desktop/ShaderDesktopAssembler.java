@@ -73,7 +73,7 @@ import com.jfixby.tools.gdx.texturepacker.api.TexturePacker;
 
 public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 
-	private static final String INSTALLATION_ID_FILE_NAME = "com.red-triplane.redparallax.iid";
+	private static final String INSTALLATION_ID_FILE_NAME = "com.red-triplane.redshader.iid";
 
 	@Override
 	public void assembleEngine () {

@@ -29,10 +29,10 @@ public class RunShaderDesktop {
 		final GdxAdaptor adaptor = new GdxAdaptor(machine);
 
 		final FokkerLwjglApplicationConfiguration cfg = new FokkerLwjglApplicationConfiguration();
-		cfg.title = "Red Parallax Viewer [" + ShaderUI.scene_id + "]";
+		cfg.title = "Red Shader Viewer [" + ShaderUI.scene_id + "]";
 		cfg.useGL30 = true;
-		cfg.width = 615;
-		cfg.height = 385;
+		cfg.width = 1024;
+		cfg.height = 768;
 // cfg.vSyncEnabled = false;qw
 // cfg.r = 1;
 // cfg.g = 1;

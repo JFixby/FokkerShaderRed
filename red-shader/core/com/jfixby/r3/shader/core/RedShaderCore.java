@@ -8,7 +8,7 @@ import com.jfixby.scarabei.api.assets.Names;
 
 public class RedShaderCore implements BusinessLogicComponent {
 
-	public static final ID unit_id = Names.newID("com.jfixby.r3.parallax.ui.ParallaxUI");
+	public static final ID unit_id = Names.newID("com.jfixby.r3.shader.ui.ShaderUI");
 
 	@Override
 	public void start () {

@@ -9,8 +9,6 @@ import com.jfixby.r3.api.ui.unit.RootLayer;
 import com.jfixby.r3.api.ui.unit.Unit;
 import com.jfixby.r3.api.ui.unit.UnitManager;
 import com.jfixby.r3.api.ui.unit.input.MouseScrolledEvent;
-import com.jfixby.r3.api.ui.unit.parallax.Parallax;
-import com.jfixby.r3.api.ui.unit.raster.GraphicalConsole;
 import com.jfixby.r3.api.ui.unit.update.UnitClocks;
 import com.jfixby.r3.api.ui.unit.user.KeyboardInputEventListener;
 import com.jfixby.r3.api.ui.unit.user.UpdateListener;
@@ -18,7 +16,7 @@ import com.jfixby.r3.ext.api.scene2d.Scene;
 import com.jfixby.r3.ext.api.scene2d.Scene2D;
 import com.jfixby.r3.ext.api.scene2d.Scene2DSpawningConfig;
 import com.jfixby.r3.shader.pack.PackConfig;
-import com.jfixby.r3.shader.pack.RepackParallaxScene;
+import com.jfixby.r3.shader.pack.Repacker;
 import com.jfixby.rana.api.asset.AssetsConsumer;
 import com.jfixby.rana.api.asset.AssetsManager;
 import com.jfixby.rana.api.pkg.PackageReaderListener;
@@ -27,38 +25,23 @@ import com.jfixby.rana.api.pkg.ResourcesGroup;
 import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.scarabei.api.assets.ID;
 import com.jfixby.scarabei.api.assets.Names;
-import com.jfixby.scarabei.api.file.File;
-import com.jfixby.scarabei.api.file.LocalFileSystem;
-import com.jfixby.scarabei.api.floatn.Float2;
-import com.jfixby.scarabei.api.geometry.Geometry;
 import com.jfixby.scarabei.api.input.Key;
 import com.jfixby.scarabei.api.input.UserInput;
 import com.jfixby.scarabei.api.log.L;
-import com.jfixby.scarabei.api.sys.Sys;
 
 public class ShaderUI implements Unit, AssetsConsumer {
 
 	private RootLayer root;
 	private ComponentsFactory factory;
-	public static final ID scene_id = Names.newID("com.jfixby.r3.parallax.ui.scene.psd");
+	public static final ID scene_id = Names.newID("com.jfixby.r3.shader.ui.scene.psd");
 
 	long timestamp = 0;
 	private Scene game_scene;
 // private AssetHandler assetHandler;
-	private Parallax parallax;
-	private File psdfile;
-	private long psdVersion;
-	private long previouspsdVersion;
-	private double parallaxWidth;
-	private GraphicalConsole console;
 	GifRecorder recorder;
 	long lastPSDCheckTimestamp = 0;
 	double frame = -1;
 	long DELTA = 1000;
-	boolean animating = true;
-
-	final MouseCapture mouseCap = new MouseCapture(this);
-	final Float2 tmp = Geometry.newFloat2();
 
 	@Override
 	public void onCreate (final UnitManager unitManager) {
@@ -69,20 +52,11 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		this.root.attachComponent(this.onUpdate);
 
 		this.root.attachComponent(this.onKeyboardInput);
-		this.root.attachComponent(this.mouseCap);
 
-		final Integer v = null;
 // v.intValue();// simulate crash
 
 		this.deployScene();
 // this.root.attachComponent(this.console);
-		this.psdfile = LocalFileSystem.ApplicationHome().child("input-psd").child("scene.psd");
-		try {
-			this.psdVersion = this.psdfile.lastModified();
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
-		this.previouspsdVersion = this.psdVersion;
 	}
 
 	private void deployScene () {
@@ -92,52 +66,24 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		config.setPackageListener(PackageReaderListener.DEFAULT);
 
 		this.game_scene = Scene2D.spawnScene(this.factory, config);
-		this.parallax = this.game_scene.listParallaxes().getLast();
 
 		this.root.attachComponent(this.game_scene);
-		this.parallax.setPositionX(0);
-		this.parallax.setPositionY(0);
-		this.parallaxWidth = this.parallax.getWidth();
 	}
 
 	final UpdateListener onUpdate = new UpdateListener() {
 		@Override
 		public void onUpdate (final UnitClocks unit_clock) {
 
-			if (ShaderUI.this.animating) {
-				ShaderUI.this.frame++;
-				ShaderUI.this.tmp.setXY();
-				ShaderUI.this.tmp.setX(Math.sin(ShaderUI.this.frame / 60d));
-				ShaderUI.this.tmp.add(1, 0);
-				ShaderUI.this.tmp.scaleXY(0.5d);
-				ShaderUI.this.setParallax(ShaderUI.this.tmp);
-				if (ShaderUI.this.frame % 2 == 0) {
-					ShaderUI.this.recorder.push();
-				}
-			}
-			final long current = Sys.SystemTime().currentTimeMillis();
-			if ((current - ShaderUI.this.lastPSDCheckTimestamp) <= ShaderUI.this.DELTA) {
-				return;
-			}
-			try {
-				ShaderUI.this.psdVersion = ShaderUI.this.psdfile.lastModified();
-			} catch (final IOException e) {
-				e.printStackTrace();
-			}
-			if (ShaderUI.this.psdVersion == ShaderUI.this.previouspsdVersion) {
-				return;
-			}
-
 			ShaderUI.this.repack();
 		}
 
 	};
-	public static final ID unit_id = Names.newID("com.jfixby.r3.parallax.ui.ParallaxUI");
+	public static final ID unit_id = Names.newID("com.jfixby.r3.shader.ui.ShaderUI");
 
 	private void repack () {
 		ShaderUI.this.recorder.stop();
 		try {
-			RepackParallaxScene.repack();
+			Repacker.repack();
 
 		} catch (final IOException e) {
 			e.printStackTrace();
@@ -165,7 +111,6 @@ public class ShaderUI implements Unit, AssetsConsumer {
 				ShaderUI.this.recorder.stop();
 			}
 			if (UserInput.Keyboard().A() == key) {
-				ShaderUI.this.animating = !ShaderUI.this.animating;
 			}
 			return true;
 		}
@@ -183,10 +128,6 @@ public class ShaderUI implements Unit, AssetsConsumer {
 
 	};
 
-	public void setParallax (final Float2 value) {
-		this.parallax.setParallaxOffset(value);
-	}
-
 	@Override
 	public void onDestroy () {
 		AssetsManager.purge();
@@ -195,10 +136,6 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		final ResourcesGroup group = ResourcesManager.getResourcesGroup(Names.newID(PackConfig.BANK_NAME));
 		group.rebuildAllIndexes(listener);
 		group.printAllIndexes();
-	}
-
-	public double getParallaxWidth () {
-		return this.parallaxWidth;
 	}
 
 	@Override
