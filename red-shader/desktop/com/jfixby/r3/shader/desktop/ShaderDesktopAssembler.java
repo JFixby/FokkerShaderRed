@@ -46,8 +46,6 @@ import com.jfixby.redreporter.client.http.ReporterHttpClientConfig;
 import com.jfixby.redreporter.crash.RedCrashReporter;
 import com.jfixby.scarabei.adopted.gdx.json.RedJson;
 import com.jfixby.scarabei.api.collections.Collection;
-import com.jfixby.scarabei.api.collections.Collections;
-import com.jfixby.scarabei.api.collections.List;
 import com.jfixby.scarabei.api.collisions.Collisions;
 import com.jfixby.scarabei.api.desktop.ImageAWT;
 import com.jfixby.scarabei.api.file.File;
@@ -228,20 +226,14 @@ public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 			}
 
 		}
-
 		final File assets_cache_folder = home.child("assets-cache");
+
 		{
-			final List<String> tanks = Collections.newList("tank-0");
-			final HttpURL bankURL = Http.newURL("https://s3.eu-central-1.amazonaws.com/com.red-triplane.assets/bank-r3");
-			final ResourcesGroup bank = res_manager.installRemoteBank(bankURL, assets_cache_folder, tanks);
-			bank.rebuildAllIndexes(null);
-		}
-// {
 // final List<String> tanks = Collections.newList("tank-0");
-// final HttpURL bankURL = Http.newURL("https://s3.eu-central-1.amazonaws.com/com.red-triplane.assets/bank-lib");
+// final HttpURL bankURL = Http.newURL("https://s3.eu-central-1.amazonaws.com/com.red-triplane.assets/bank-r3");
 // final ResourcesGroup bank = res_manager.installRemoteBank(bankURL, assets_cache_folder, tanks);
 // bank.rebuildAllIndexes(null);
-// }
+		}
 	}
 
 }

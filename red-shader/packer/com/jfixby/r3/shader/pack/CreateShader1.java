@@ -4,7 +4,9 @@ package com.jfixby.r3.shader.pack;
 import java.io.IOException;
 
 import com.jfixby.r3.api.shader.srlz.R3_SHADER_SETTINGS;
+import com.jfixby.r3.api.shader.srlz.SHADER_PARAMETER;
 import com.jfixby.r3.api.shader.srlz.ShaderInfo;
+import com.jfixby.r3.api.shader.srlz.ShaderParameterInfo;
 import com.jfixby.r3.api.shader.srlz.ShadersContainer;
 import com.jfixby.r3.shader.ui.ShaderUI;
 import com.jfixby.scarabei.adopted.gdx.json.RedJson;
@@ -53,6 +55,19 @@ public class CreateShader1 {
 		info.shader_id = shader_id.toString();
 		info.shader_folder_name = name;
 		info.isOverlay = false;
+		{
+			final ShaderParameterInfo parameter = new ShaderParameterInfo("grayscale", "float");
+			info.parameters_list.add(parameter);
+		}
+		{
+			final ShaderParameterInfo parameter = new ShaderParameterInfo(SHADER_PARAMETER.POSITION_X, "float");
+			info.parameters_list.add(parameter);
+		}
+		{
+			final ShaderParameterInfo parameter = new ShaderParameterInfo(SHADER_PARAMETER.POSITION_Y, "float");
+			info.parameters_list.add(parameter);
+		}
+
 		container.shaders.add(info);
 	}
 

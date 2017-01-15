@@ -8,6 +8,9 @@ import com.jfixby.r3.api.ui.unit.ComponentsFactory;
 import com.jfixby.r3.api.ui.unit.RootLayer;
 import com.jfixby.r3.api.ui.unit.Unit;
 import com.jfixby.r3.api.ui.unit.UnitManager;
+import com.jfixby.r3.api.ui.unit.camera.Camera;
+import com.jfixby.r3.api.ui.unit.camera.CameraSpecs;
+import com.jfixby.r3.api.ui.unit.camera.SIMPLE_CAMERA_POLICY;
 import com.jfixby.r3.api.ui.unit.input.MouseScrolledEvent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderComponent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderFactory;
@@ -45,6 +48,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 	double frame = -1;
 	long DELTA = 1000;
 	private ShaderFactory shadersFactory;
+	private Camera camera;
 
 	@Override
 	public void onCreate (final UnitManager unitManager) {
@@ -58,6 +62,14 @@ public class ShaderUI implements Unit, AssetsConsumer {
 
 		this.shadersFactory = this.factory.getShadersDepartment();
 
+		final CameraSpecs camSpec = this.factory.getCameraDepartment().newCameraSpecs();
+		camSpec.setSimpleCameraPolicy(SIMPLE_CAMERA_POLICY.EXPAND_CAMERA_VIEWPORT_ON_SCREEN_RESIZE);
+		this.camera = this.factory.getCameraDepartment().newCamera(camSpec);
+		this.camera.setOriginRelative(0.5, 0.5);
+		this.camera.setPosition(0, 0);
+		this.camera.setDebugFlag(true);
+		this.root.setCamera(this.camera);
+
 		final PackageReaderListener listener = PackageReaderListener.DEFAULT;
 		AssetsManager.autoResolveAsset(shader_id1, listener);
 
@@ -70,8 +82,10 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		final ShaderSpecs shader_specs = shader_factory.newShaderSpecs();
 		shader_specs.setShaderAssetID(shader_asset_id);
 		final Rectangle shape = Geometry.newRectangle();
-		shape.setPosition(50, 50);
+		shape.setOriginRelative(0.5, 0.5);
+		shape.setPosition(0, 0);
 		shape.setSize(100, 50);
+
 		//
 		shader_specs.setShape(shape);
 		final ShaderComponent shader = shader_factory.newShader(shader_specs);
