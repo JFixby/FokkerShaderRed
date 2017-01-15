@@ -49,6 +49,8 @@ public class ShaderUI implements Unit, AssetsConsumer {
 	long DELTA = 1000;
 	private ShaderFactory shadersFactory;
 	private Camera camera;
+	private ShaderComponent shader;
+	private long startTime;
 
 	@Override
 	public void onCreate (final UnitManager unitManager) {
@@ -73,10 +75,19 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		final PackageReaderListener listener = PackageReaderListener.DEFAULT;
 		AssetsManager.autoResolveAsset(shader_id1, listener);
 
-		final ShaderComponent shaderComponent = createShader(shader_id1, this.shadersFactory);
-		this.root.attachComponent(shaderComponent);
+		this.shader = createShader(shader_id1, this.shadersFactory);
+		this.root.attachComponent(this.shader);
+		this.root.attachComponent(this.shaderClock);
+		this.startTime = System.currentTimeMillis();
 
 	}
+
+	final UpdateListener shaderClock = new UpdateListener() {
+		@Override
+		public void onUpdate (final UnitClocks unit_clock) {
+			ShaderUI.this.shader.setFloatParameterValue("time", 2 * (System.currentTimeMillis() - ShaderUI.this.startTime) / 1000d);
+		}
+	};
 
 	static private ShaderComponent createShader (final ID shader_asset_id, final ShaderFactory shader_factory) {
 		final ShaderSpecs shader_specs = shader_factory.newShaderSpecs();
@@ -84,7 +95,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		final Rectangle shape = Geometry.newRectangle();
 		shape.setOriginRelative(0.5, 0.5);
 		shape.setPosition(0, 0);
-		shape.setSize(100, 50);
+		shape.setSize(512, 512);
 
 		//
 		shader_specs.setShape(shape);
