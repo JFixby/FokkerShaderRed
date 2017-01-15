@@ -58,6 +58,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		this.root = unitManager.getRootLayer();
 		this.factory = unitManager.getComponentsFactory();
 		this.recorder = new GifRecorder(unitManager.getToolkit());
+
 		this.root.attachComponent(this.onUpdate);
 
 		this.root.attachComponent(this.onKeyboardInput);
@@ -85,7 +86,15 @@ public class ShaderUI implements Unit, AssetsConsumer {
 	final UpdateListener shaderClock = new UpdateListener() {
 		@Override
 		public void onUpdate (final UnitClocks unit_clock) {
-			ShaderUI.this.shader.setFloatParameterValue("time", 2 * (System.currentTimeMillis() - ShaderUI.this.startTime) / 1000d);
+
+			ShaderUI.this.frame++;
+			if (ShaderUI.this.frame % 2 == 0) {
+				ShaderUI.this.recorder.push();
+			}
+// final double time = 2 * (System.currentTimeMillis() - ShaderUI.this.startTime) / 1000d;
+			final double time = ShaderUI.this.frame / 25d;
+
+			ShaderUI.this.shader.setFloatParameterValue("time", time);
 		}
 	};
 
