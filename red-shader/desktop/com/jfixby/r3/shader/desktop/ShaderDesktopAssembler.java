@@ -224,6 +224,7 @@ public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 			locals.print("locals");
 			for (final ResourcesGroup local : locals) {
 				local.rebuildAllIndexes(null);
+				local.printAllIndexes();
 			}
 
 		}

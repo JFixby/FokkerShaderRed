@@ -9,12 +9,13 @@ import com.jfixby.r3.api.ui.unit.RootLayer;
 import com.jfixby.r3.api.ui.unit.Unit;
 import com.jfixby.r3.api.ui.unit.UnitManager;
 import com.jfixby.r3.api.ui.unit.input.MouseScrolledEvent;
+import com.jfixby.r3.api.ui.unit.shader.ShaderComponent;
+import com.jfixby.r3.api.ui.unit.shader.ShaderFactory;
+import com.jfixby.r3.api.ui.unit.shader.ShaderSpecs;
 import com.jfixby.r3.api.ui.unit.update.UnitClocks;
 import com.jfixby.r3.api.ui.unit.user.KeyboardInputEventListener;
 import com.jfixby.r3.api.ui.unit.user.UpdateListener;
 import com.jfixby.r3.ext.api.scene2d.Scene;
-import com.jfixby.r3.ext.api.scene2d.Scene2D;
-import com.jfixby.r3.ext.api.scene2d.Scene2DSpawningConfig;
 import com.jfixby.r3.shader.pack.PackConfig;
 import com.jfixby.r3.shader.pack.ShaderRepacker;
 import com.jfixby.rana.api.asset.AssetsConsumer;
@@ -25,15 +26,16 @@ import com.jfixby.rana.api.pkg.ResourcesGroup;
 import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.scarabei.api.assets.ID;
 import com.jfixby.scarabei.api.assets.Names;
+import com.jfixby.scarabei.api.geometry.Geometry;
+import com.jfixby.scarabei.api.geometry.Rectangle;
 import com.jfixby.scarabei.api.input.Key;
 import com.jfixby.scarabei.api.input.UserInput;
 import com.jfixby.scarabei.api.log.L;
 
 public class ShaderUI implements Unit, AssetsConsumer {
-
 	private RootLayer root;
 	private ComponentsFactory factory;
-	public static final ID scene_id = Names.newID("com.jfixby.r3.shader.ui.scene.psd");
+	public static final ID shader_id1 = Names.newID("com.jfixby.r3.shader.shader1");
 
 	long timestamp = 0;
 	private Scene game_scene;
@@ -42,6 +44,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 	long lastPSDCheckTimestamp = 0;
 	double frame = -1;
 	long DELTA = 1000;
+	private ShaderFactory shadersFactory;
 
 	@Override
 	public void onCreate (final UnitManager unitManager) {
@@ -53,28 +56,41 @@ public class ShaderUI implements Unit, AssetsConsumer {
 
 		this.root.attachComponent(this.onKeyboardInput);
 
-// v.intValue();// simulate crash
+		this.shadersFactory = this.factory.getShadersDepartment();
 
-		this.deployScene();
-// this.root.attachComponent(this.console);
+		final PackageReaderListener listener = PackageReaderListener.DEFAULT;
+		AssetsManager.autoResolveAsset(shader_id1, listener);
+
+		final ShaderComponent shaderComponent = createShader(shader_id1, this.shadersFactory);
+		this.root.attachComponent(shaderComponent);
+
 	}
 
-	private void deployScene () {
-
-		final Scene2DSpawningConfig config = Scene2D.newSceneSpawningConfig();
-		config.setStructureID(this.scene_id);
-		config.setPackageListener(PackageReaderListener.DEFAULT);
-
-		this.game_scene = Scene2D.spawnScene(this.factory, config);
-
-		this.root.attachComponent(this.game_scene);
+	static private ShaderComponent createShader (final ID shader_asset_id, final ShaderFactory shader_factory) {
+		final ShaderSpecs shader_specs = shader_factory.newShaderSpecs();
+		shader_specs.setShaderAssetID(shader_asset_id);
+		final Rectangle shape = Geometry.newRectangle();
+		shape.setPosition(50, 50);
+		shape.setSize(100, 50);
+		//
+		shader_specs.setShape(shape);
+		final ShaderComponent shader = shader_factory.newShader(shader_specs);
+		shader.setName("shader");
+// for (int i = 0; i < shader_settings.params.size(); i++) {
+// final ShaderParameterValue parameter = shader_settings.params.get(i);
+// if (parameter.type == ShaderParameterType.FLOAT) {
+// shader.setFloatParameterValue(parameter.name, Double.parseDouble(parameter.value));
+// }
+// }
+//
+		return shader;
 	}
 
 	final UpdateListener onUpdate = new UpdateListener() {
 		@Override
 		public void onUpdate (final UnitClocks unit_clock) {
 
-			ShaderUI.this.repack();
+// ShaderUI.this.repack();
 		}
 
 	};
@@ -134,6 +150,10 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		final ResourceRebuildIndexListener listener = null;
 		// AssetsManager.printAllLoadedAssets();
 		final ResourcesGroup group = ResourcesManager.getResourcesGroup(Names.newID(PackConfig.BANK_NAME));
+		if (group == null) {
+			return;
+		}
+
 		group.rebuildAllIndexes(listener);
 		group.printAllIndexes();
 	}
