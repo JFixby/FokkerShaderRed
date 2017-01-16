@@ -11,12 +11,14 @@ import com.jfixby.r3.api.ui.unit.UnitManager;
 import com.jfixby.r3.api.ui.unit.camera.Camera;
 import com.jfixby.r3.api.ui.unit.camera.CameraSpecs;
 import com.jfixby.r3.api.ui.unit.camera.SIMPLE_CAMERA_POLICY;
+import com.jfixby.r3.api.ui.unit.camera.ScreenDimentions;
 import com.jfixby.r3.api.ui.unit.input.MouseScrolledEvent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderComponent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderFactory;
 import com.jfixby.r3.api.ui.unit.shader.ShaderSpecs;
 import com.jfixby.r3.api.ui.unit.update.UnitClocks;
 import com.jfixby.r3.api.ui.unit.user.KeyboardInputEventListener;
+import com.jfixby.r3.api.ui.unit.user.ScreenChangeListener;
 import com.jfixby.r3.api.ui.unit.user.UpdateListener;
 import com.jfixby.r3.ext.api.scene2d.Scene;
 import com.jfixby.r3.shader.pack.PackConfig;
@@ -70,7 +72,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		this.camera = this.factory.getCameraDepartment().newCamera(camSpec);
 		this.camera.setOriginRelative(0.5, 0.5);
 		this.camera.setPosition(0, 0);
-		this.camera.setDebugFlag(true);
+		this.camera.setDebugFlag(!true);
 		this.root.setCamera(this.camera);
 
 		final PackageReaderListener listener = PackageReaderListener.DEFAULT;
@@ -79,6 +81,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		this.shader = createShader(shader_id1, this.shadersFactory);
 		this.root.attachComponent(this.shader);
 		this.root.attachComponent(this.shaderClock);
+		this.root.attachComponent(this.screenListener);
 		this.startTime = System.currentTimeMillis();
 
 	}
@@ -95,6 +98,19 @@ public class ShaderUI implements Unit, AssetsConsumer {
 			final double time = ShaderUI.this.frame / 25d;
 
 			ShaderUI.this.shader.setFloatParameterValue("time", time);
+		}
+	};
+
+	final ScreenChangeListener screenListener = new ScreenChangeListener() {
+
+		@Override
+		public void onScreenChanged (final ScreenDimentions viewport_update) {
+			final Rectangle shape = ShaderUI.this.shader.getShape();
+			if (shape == null) {
+				return;
+			}
+
+			shape.setSize(viewport_update.getScreenWidth() * 1.0, viewport_update.getScreenHeight() * 1.0);
 		}
 	};
 
