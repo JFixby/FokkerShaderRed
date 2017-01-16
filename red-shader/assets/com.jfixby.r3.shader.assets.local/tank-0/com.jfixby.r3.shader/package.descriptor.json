@@ -1,0 +1,9 @@
+{
+	"format":"RedTriplane.Shader",
+	"version":"1.0",
+	"timestamp":"1484432242874",
+	"root_file_name":"r3.shader.info",
+	"packed_assets":[
+		"com.jfixby.r3.shader.shader1"
+		]
+}
