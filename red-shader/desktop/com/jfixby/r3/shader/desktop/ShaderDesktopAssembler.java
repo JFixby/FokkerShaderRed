@@ -32,7 +32,6 @@ import com.jfixby.r3.shader.core.RedShaderCore;
 import com.jfixby.r3.ui.RedUIManager;
 import com.jfixby.rana.api.asset.AssetsManager;
 import com.jfixby.rana.api.asset.AssetsManagerFlags;
-import com.jfixby.rana.api.pkg.ResourcesGroup;
 import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.engine.core.resources.RedAssetsManager;
 import com.jfixby.red.engine.scene2d.RedScene2D;
@@ -46,7 +45,6 @@ import com.jfixby.redreporter.client.http.ReporterHttpClient;
 import com.jfixby.redreporter.client.http.ReporterHttpClientConfig;
 import com.jfixby.redreporter.crash.RedCrashReporter;
 import com.jfixby.scarabei.adopted.gdx.json.RedJson;
-import com.jfixby.scarabei.api.collections.Collection;
 import com.jfixby.scarabei.api.collisions.Collisions;
 import com.jfixby.scarabei.api.desktop.ImageAWT;
 import com.jfixby.scarabei.api.file.File;
@@ -94,6 +92,8 @@ public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 		SystemSettings.setFlag(AssetsManager.ReportUnusedAssets, false);
 		SystemSettings.setFlag(AssetsManagerFlags.AutoresolveDependencies, true);
 		SystemSettings.setFlag(R3Text.RenderRasterStrings, true);
+		SystemSettings.setFlag(Settings.DisableLogo, true);
+
 		SystemSettings.setStringParameter(FokkerEngineParams.TextureFilter.Mag, TextureFilter.Nearest + "");
 		SystemSettings.setStringParameter(FokkerEngineParams.TextureFilter.Min, TextureFilter.Nearest + "");
 		SystemSettings.setStringParameter(Assets.DefaultFont, "Arial");
@@ -107,11 +107,7 @@ public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 
 		deployAnalytics();
 
-		try {
-			this.installResources();
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
+		this.installResources();
 
 		Scene2D.installComponent(new RedScene2D());
 		R3Text.installComponent(new RedTriplaneText());
@@ -210,25 +206,15 @@ public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 		return imfs.ROOT();
 	}
 
-	private void installResources () throws IOException {
+	private void installResources () {
 
 		final RedResourcesManagerSpecs specs = new RedResourcesManagerSpecs();
-		final RedResourcesManager res_manager = new RedResourcesManager(specs);
-		ResourcesManager.installComponent(res_manager);
-
 		final File home = LocalFileSystem.ApplicationHome();
 		final File assets_folder = home.child("assets");
 
-		if (assets_folder.exists() && assets_folder.isFolder()) {
-			final Collection<ResourcesGroup> locals = res_manager.findAndInstallResources(assets_folder);
-			locals.print("locals");
-			for (final ResourcesGroup local : locals) {
-				local.rebuildAllIndexes(null);
-				local.printAllIndexes();
-			}
-
-		}
+		specs.setAssetsFolder(assets_folder);
 		final File assets_cache_folder = home.child("assets-cache");
+		specs.setAssetsCacheFolder(assets_cache_folder);
 
 		{
 // final List<String> tanks = Collections.newList("tank-0");
@@ -236,6 +222,10 @@ public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 // final ResourcesGroup bank = res_manager.installRemoteBank(bankURL, assets_cache_folder, tanks);
 // bank.rebuildAllIndexes(null);
 		}
+
+		final RedResourcesManager res_manager = new RedResourcesManager(specs);
+		ResourcesManager.installComponent(res_manager);
+
 	}
 
 }
