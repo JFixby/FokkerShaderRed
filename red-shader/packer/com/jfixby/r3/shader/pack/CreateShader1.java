@@ -9,7 +9,7 @@ import com.jfixby.r3.api.shader.srlz.ShaderInfo;
 import com.jfixby.r3.api.shader.srlz.ShaderParameterInfo;
 import com.jfixby.r3.api.shader.srlz.ShadersContainer;
 import com.jfixby.r3.shader.ui.ShaderUI;
-import com.jfixby.scarabei.adopted.gdx.json.RedJson;
+import com.jfixby.scarabei.adopted.gdx.json.GoogleGson;
 import com.jfixby.scarabei.api.assets.ID;
 import com.jfixby.scarabei.api.desktop.DesktopSetup;
 import com.jfixby.scarabei.api.file.File;
@@ -24,7 +24,7 @@ public class CreateShader1 {
 
 	public static void main (final String[] args) throws IOException {
 		DesktopSetup.deploy();
-		Json.installComponent(new RedJson());
+		Json.installComponent(new GoogleGson());
 
 		final ID shaderID = ShaderUI.shader_id1;
 

@@ -9,7 +9,7 @@ import com.jfixby.r3.api.shader.srlz.ShadersContainer;
 import com.jfixby.rana.api.pkg.StandardPackageFormats;
 import com.jfixby.red.engine.core.resources.PackageUtils;
 import com.jfixby.red.engine.core.resources.PackerSpecs;
-import com.jfixby.scarabei.adopted.gdx.json.RedJson;
+import com.jfixby.scarabei.adopted.gdx.json.GoogleGson;
 import com.jfixby.scarabei.api.assets.ID;
 import com.jfixby.scarabei.api.assets.Names;
 import com.jfixby.scarabei.api.collections.Collections;
@@ -25,7 +25,7 @@ public class ShaderRepacker {
 
 	public static void main (final String[] args) throws IOException {
 		DesktopSetup.deploy();
-		Json.installComponent(new RedJson());
+		Json.installComponent(new GoogleGson());
 		repack();
 	}
 
