@@ -17,9 +17,9 @@ import com.jfixby.r3.api.ui.unit.shader.ShaderComponent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderFactory;
 import com.jfixby.r3.api.ui.unit.shader.ShaderSpecs;
 import com.jfixby.r3.api.ui.unit.update.UnitClocks;
+import com.jfixby.r3.api.ui.unit.update.OnUpdateListener;
 import com.jfixby.r3.api.ui.unit.user.KeyboardInputEventListener;
 import com.jfixby.r3.api.ui.unit.user.ScreenChangeListener;
-import com.jfixby.r3.api.ui.unit.user.UpdateListener;
 import com.jfixby.r3.ext.api.scene2d.Scene;
 import com.jfixby.r3.shader.pack.PackConfig;
 import com.jfixby.r3.shader.pack.ShaderRepacker;
@@ -86,7 +86,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 
 	}
 
-	final UpdateListener shaderClock = new UpdateListener() {
+	final OnUpdateListener shaderClock = new OnUpdateListener() {
 		@Override
 		public void onUpdate (final UnitClocks unit_clock) {
 
@@ -136,7 +136,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		return shader;
 	}
 
-	final UpdateListener onUpdate = new UpdateListener() {
+	final OnUpdateListener onUpdate = new OnUpdateListener() {
 		@Override
 		public void onUpdate (final UnitClocks unit_clock) {
 
