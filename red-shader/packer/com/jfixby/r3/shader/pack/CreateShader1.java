@@ -11,7 +11,7 @@ import com.jfixby.r3.api.shader.srlz.ShadersContainer;
 import com.jfixby.r3.shader.ui.ShaderUI;
 import com.jfixby.scarabei.adopted.gdx.json.GoogleGson;
 import com.jfixby.scarabei.api.assets.ID;
-import com.jfixby.scarabei.api.desktop.DesktopSetup;
+import com.jfixby.scarabei.api.desktop.ScarabeiDesktop;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.file.LocalFileSystem;
 import com.jfixby.scarabei.api.io.IO;
@@ -23,7 +23,7 @@ import com.jfixby.scarabei.api.log.L;
 public class CreateShader1 {
 
 	public static void main (final String[] args) throws IOException {
-		DesktopSetup.deploy();
+		ScarabeiDesktop.deploy();
 		Json.installComponent(new GoogleGson());
 
 		final ID shaderID = ShaderUI.shader_id1;
