@@ -8,7 +8,6 @@ import com.jfixby.r3.api.shader.srlz.R3_SHADER_SETTINGS;
 import com.jfixby.r3.api.shader.srlz.ShaderInfo;
 import com.jfixby.r3.api.shader.srlz.ShadersContainer;
 import com.jfixby.r3.engine.core.unit.raster.FOKKER_SYSTEM_ASSETS;
-import com.jfixby.scarabei.adopted.gdx.json.GoogleGson;
 import com.jfixby.scarabei.api.assets.ID;
 import com.jfixby.scarabei.api.desktop.ScarabeiDesktop;
 import com.jfixby.scarabei.api.file.File;
@@ -18,6 +17,7 @@ import com.jfixby.scarabei.api.java.ByteArray;
 import com.jfixby.scarabei.api.json.Json;
 import com.jfixby.scarabei.api.json.JsonString;
 import com.jfixby.scarabei.api.log.L;
+import com.jfixby.scarabei.gson.GoogleGson;
 
 public class CreateDefaultGdxShader {
 
