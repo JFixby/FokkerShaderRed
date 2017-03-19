@@ -24,4 +24,14 @@ public class RedShaderParameter implements ShaderParameter {
 		return this.type;
 	}
 
+	@Override
+	public String TYPE_FLOAT () {
+		return ShaderParameterInfo.TYPE_FLOAT;
+	}
+
+	@Override
+	public String TYPE_INT () {
+		return ShaderParameterInfo.TYPE_INT;
+	}
+
 }
