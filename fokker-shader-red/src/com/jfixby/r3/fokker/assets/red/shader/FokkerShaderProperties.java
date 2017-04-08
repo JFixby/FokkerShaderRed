@@ -3,6 +3,7 @@ package com.jfixby.r3.fokker.assets.red.shader;
 
 import com.jfixby.r3.fokker.api.ShaderParameter;
 import com.jfixby.r3.fokker.api.ShaderProperties;
+import com.jfixby.r3.fokker.api.ShaderSettings;
 import com.jfixby.r3.fokker.assets.api.shader.io.ShaderInfo;
 import com.jfixby.r3.fokker.assets.api.shader.io.ShaderParameterInfo;
 import com.jfixby.scarabei.api.collections.Collections;
@@ -11,7 +12,6 @@ import com.jfixby.scarabei.api.collections.Mapping;
 
 public class FokkerShaderProperties implements ShaderProperties {
 	private final Map<String, ShaderParameter> parameters_by_name = Collections.newMap();
-	private final Map<String, ShaderParameter> parameters_list = Collections.newMap();
 
 	public FokkerShaderProperties (final ShaderEntry redFokkerShader) {
 	}
@@ -27,6 +27,24 @@ public class FokkerShaderProperties implements ShaderProperties {
 	@Override
 	public Mapping<String, ShaderParameter> listParameters () {
 		return this.parameters_by_name;
+	}
+
+	@Override
+	public ShaderSettings newShaderSettings () {
+		final RedShaderSettings settings = new RedShaderSettings();
+		for (final String paramname : this.parameters_by_name.keys()) {
+			final ShaderParameter param = this.parameters_by_name.get(paramname);
+			if (param.getType().equals(param.TYPE_FLOAT())) {
+				final float def = param.getDefaultValue();
+				settings.setFloatParameterValue(paramname, def);
+			}
+			if (param.getType().equals(param.TYPE_INT())) {
+				final int def = param.getDefaultValue();
+				settings.setIntParameterValue(paramname, def);
+			}
+
+		}
+		return settings;
 	}
 
 }
