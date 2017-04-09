@@ -1,7 +1,7 @@
 
 package com.jfixby.r3.fokker.assets.red.shader;
 
-import com.jfixby.r3.fokker.assets.api.shader.ShaderParameter;
+import com.jfixby.r3.fokker.api.ShaderParameter;
 import com.jfixby.r3.fokker.assets.api.shader.io.ShaderParameterInfo;
 
 public class RedShaderParameter implements ShaderParameter {
@@ -17,6 +17,11 @@ public class RedShaderParameter implements ShaderParameter {
 	@Override
 	public String getName () {
 		return this.name;
+	}
+
+	@Override
+	public String getType () {
+		return this.type;
 	}
 
 }

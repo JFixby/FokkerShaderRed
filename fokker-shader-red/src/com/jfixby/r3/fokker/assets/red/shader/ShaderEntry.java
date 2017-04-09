@@ -7,16 +7,12 @@ import com.jfixby.r3.fokker.api.Shader;
 import com.jfixby.r3.fokker.api.ShaderProperties;
 import com.jfixby.r3.fokker.api.ShaderSettings;
 import com.jfixby.r3.fokker.assets.api.shader.FokkerShader;
-import com.jfixby.r3.fokker.assets.api.shader.ShaderParameter;
 import com.jfixby.r3.fokker.assets.api.shader.io.R3_SHADER_SETTINGS;
 import com.jfixby.r3.fokker.assets.api.shader.io.ShaderInfo;
-import com.jfixby.r3.fokker.assets.api.shader.io.ShaderParameterInfo;
 import com.jfixby.r3.fokker.assets.api.shader.io.ShadersContainer;
 import com.jfixby.rana.api.Asset;
 import com.jfixby.rana.api.AssetsGroup;
 import com.jfixby.scarabei.api.assets.ID;
-import com.jfixby.scarabei.api.collections.Collections;
-import com.jfixby.scarabei.api.collections.Map;
 import com.jfixby.scarabei.api.debug.Debug;
 import com.jfixby.scarabei.api.err.Err;
 import com.jfixby.scarabei.api.file.File;
@@ -33,7 +29,6 @@ public class ShaderEntry implements Asset, FokkerShader, Shader {
 	private final File vertex_file;
 	private final RedShaderProgram vertex_program;
 	private final RedShaderProgram fragment_program;
-	Map<String, ShaderParameter> params = Collections.newMap();
 	private final FokkerShaderProperties properties = new FokkerShaderProperties(this);
 
 	private final com.badlogic.gdx.graphics.glutils.ShaderProgram gdx_shader_program;
@@ -48,13 +43,6 @@ public class ShaderEntry implements Asset, FokkerShader, Shader {
 		this.shader_folder = shader_folder;
 		this.container = container;
 		this.properties.set(shaderInfo);
-
-		for (final ShaderParameterInfo param : shaderInfo.parameters_list) {
-			final String name = param.name;
-			final ShaderParameter value = new Parameter(param);
-			this.params.put(name, value);
-		}
-		;
 
 		this.frag_file = shader_folder.child(R3_SHADER_SETTINGS.FRAG_FILE_NAME);
 		this.vertex_file = shader_folder.child(R3_SHADER_SETTINGS.VERT_FILE_NAME);
@@ -74,10 +62,6 @@ public class ShaderEntry implements Asset, FokkerShader, Shader {
 	@Override
 	public ID getAssetID () {
 		return this.asset_id;
-	}
-
-	public Map<String, ShaderParameter> listParameters () {
-		return this.params;
 	}
 
 	@Override
