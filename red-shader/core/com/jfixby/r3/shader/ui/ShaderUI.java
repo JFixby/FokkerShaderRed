@@ -12,12 +12,11 @@ import com.jfixby.r3.api.ui.unit.camera.Camera;
 import com.jfixby.r3.api.ui.unit.camera.CameraSpecs;
 import com.jfixby.r3.api.ui.unit.camera.SIMPLE_CAMERA_POLICY;
 import com.jfixby.r3.api.ui.unit.camera.ScreenDimentions;
-import com.jfixby.r3.api.ui.unit.input.MouseScrolledEvent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderComponent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderFactory;
 import com.jfixby.r3.api.ui.unit.shader.ShaderSpecs;
-import com.jfixby.r3.api.ui.unit.update.UnitClocks;
 import com.jfixby.r3.api.ui.unit.update.OnUpdateListener;
+import com.jfixby.r3.api.ui.unit.update.UnitClocks;
 import com.jfixby.r3.api.ui.unit.user.KeyboardInputEventListener;
 import com.jfixby.r3.api.ui.unit.user.ScreenChangeListener;
 import com.jfixby.r3.ext.api.scene2d.Scene;
@@ -184,11 +183,6 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		@Override
 		public boolean onCharTyped (final char char_typed) {
 
-			return false;
-		}
-
-		@Override
-		public boolean onMouseScrolled (final MouseScrolledEvent event) {
 			return false;
 		}
 
