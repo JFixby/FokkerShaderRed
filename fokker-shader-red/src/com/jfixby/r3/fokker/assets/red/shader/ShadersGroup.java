@@ -24,12 +24,11 @@ public class ShadersGroup implements AssetsGroup {
 // final PackageHandler handler = input.getPackageHandler();
 		final AssetsContainer container = input.assetsContainer;
 
-		final File file = input.packageRootFile;
-		final ShadersContainer file_container = this.deserialize(ShadersContainer.class, file);
+		final ShadersContainer file_container = this.deserialize(ShadersContainer.class, package_root_file);
 		for (final ShaderInfo shader : file_container.shaders) {
 			final ID asset_id = Names.newID(shader.shader_id);
 			final String shader_folder_name = shader.shader_folder_name;
-			final File shader_folder = file.parent().child(shader_folder_name);
+			final File shader_folder = package_root_file.parent().child(shader_folder_name);
 			final ShaderEntry entry = new ShaderEntry(asset_id, shader, shader_folder, file_container, this);
 			container.addAsset(asset_id, entry);
 			redFokkerShaders.register(asset_id, entry);
