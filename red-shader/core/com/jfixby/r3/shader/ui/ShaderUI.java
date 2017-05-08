@@ -12,6 +12,8 @@ import com.jfixby.r3.api.ui.unit.camera.Camera;
 import com.jfixby.r3.api.ui.unit.camera.CameraSpecs;
 import com.jfixby.r3.api.ui.unit.camera.SIMPLE_CAMERA_POLICY;
 import com.jfixby.r3.api.ui.unit.camera.ScreenDimentions;
+import com.jfixby.r3.api.ui.unit.input.KeyDownEvent;
+import com.jfixby.r3.api.ui.unit.input.KeyUpEvent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderComponent;
 import com.jfixby.r3.api.ui.unit.shader.ShaderFactory;
 import com.jfixby.r3.api.ui.unit.shader.ShaderSpecs;
@@ -160,7 +162,8 @@ public class ShaderUI implements Unit, AssetsConsumer {
 	final KeyboardInputEventListener onKeyboardInput = new KeyboardInputEventListener() {
 
 		@Override
-		public boolean onKeyDown (final Key key) {
+		public boolean onKeyDown (final KeyDownEvent e) {
+			final Key key = e.getKey();
 			if (UserInput.Keyboard().G() == key) {
 				ShaderUI.this.recorder.start();
 			}
@@ -168,7 +171,8 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		}
 
 		@Override
-		public boolean onKeyUp (final Key key) {
+		public boolean onKeyUp (final KeyUpEvent e) {
+			final Key key = e.getKey();
 			if (UserInput.Keyboard().R() == key) {
 				ShaderUI.this.repack();
 			}
@@ -178,12 +182,6 @@ public class ShaderUI implements Unit, AssetsConsumer {
 			if (UserInput.Keyboard().A() == key) {
 			}
 			return true;
-		}
-
-		@Override
-		public boolean onCharTyped (final char char_typed) {
-
-			return false;
 		}
 
 	};
