@@ -11,7 +11,7 @@ import com.jfixby.r3.api.EngineParams.Assets;
 import com.jfixby.r3.api.EngineParams.Settings;
 import com.jfixby.r3.api.RedTriplane;
 import com.jfixby.r3.api.shader.R3Shader;
-import com.jfixby.r3.api.ui.UI;
+import com.jfixby.r3.api.ui.FokkerUI;
 import com.jfixby.r3.api.ui.FokkerUIManager;
 import com.jfixby.r3.api.ui.unit.layer.LayerUtils;
 import com.jfixby.r3.collide.RedCollisionsAlgebra;
@@ -135,7 +135,7 @@ public class ShaderDesktopAssembler implements FokkerEngineAssembler {
 
 		final RedUIManager tinto_ui_starter = new RedUIManager();
 		FokkerUIManager.installComponent(tinto_ui_starter);
-		UI.installComponent(tinto_ui_starter);
+		FokkerUI.installComponent(tinto_ui_starter);
 		RedTriplane.setGameStarter(new RedShaderCore());
 
 		Collisions.installComponent(new RedCollisionsAlgebra());

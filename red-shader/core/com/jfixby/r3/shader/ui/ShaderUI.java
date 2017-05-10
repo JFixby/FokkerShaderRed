@@ -3,7 +3,7 @@ package com.jfixby.r3.shader.ui;
 
 import java.io.IOException;
 
-import com.jfixby.r3.api.ui.UI;
+import com.jfixby.r3.api.ui.FokkerUI;
 import com.jfixby.r3.api.ui.unit.ComponentsFactory;
 import com.jfixby.r3.api.ui.unit.RootLayer;
 import com.jfixby.r3.api.ui.unit.Unit;
@@ -155,7 +155,7 @@ public class ShaderUI implements Unit, AssetsConsumer {
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
-		UI.loadUnit(unit_id);
+		FokkerUI.loadUnit(unit_id);
 
 	}
 
