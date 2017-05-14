@@ -37,12 +37,14 @@ public class ShaderEntry implements Asset, FokkerShader, Shader {
 	private final FokkerShaderProperties properties = new FokkerShaderProperties(this);
 
 	private final com.badlogic.gdx.graphics.glutils.ShaderProgram gdx_shader_program;
+	private final ShadersGroup shadersGroup;
 
-	public ShaderEntry (final ID asset_id, final ShaderInfo shaderInfo, final File shader_folder, final ShadersContainer container)
-		throws IOException {
+	public ShaderEntry (final ID asset_id, final ShaderInfo shaderInfo, final File shader_folder, final ShadersContainer container,
+		final ShadersGroup shadersGroup) throws IOException {
 		super();
 		this.asset_id = Debug.checkNull("asset_id", asset_id);
 		this.shaderInfo = shaderInfo;
+		this.shadersGroup = shadersGroup;
 		this.shader_folder = shader_folder;
 		this.container = container;
 		this.properties.set(shaderInfo);
@@ -80,8 +82,7 @@ public class ShaderEntry implements Asset, FokkerShader, Shader {
 
 	@Override
 	public AssetsGroup getGroup () {
-		Err.throwNotImplementedYet();
-		return null;
+		return this.shadersGroup;
 	}
 
 	@Override
@@ -113,6 +114,10 @@ public class ShaderEntry implements Asset, FokkerShader, Shader {
 			Err.reportError("Failed to set parameter " + param_name + "=" + value);
 
 		}
+	}
+
+	public void dispose () {
+		this.gdx_shader_program.dispose();
 	}
 
 	@Override

@@ -6,13 +6,18 @@ import java.io.IOException;
 import com.jfixby.r3.fokker.assets.api.shader.io.ShaderInfo;
 import com.jfixby.r3.fokker.assets.api.shader.io.ShadersContainer;
 import com.jfixby.rana.api.AssetsContainer;
+import com.jfixby.rana.api.AssetsGroup;
 import com.jfixby.rana.api.loader.PackageReaderInput;
 import com.jfixby.scarabei.api.assets.ID;
 import com.jfixby.scarabei.api.assets.Names;
+import com.jfixby.scarabei.api.collections.Collections;
+import com.jfixby.scarabei.api.collections.List;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.io.IO;
 
-public class ShadersGroup {
+public class ShadersGroup implements AssetsGroup {
+
+	final List<ShaderEntry> list = Collections.newList();
 
 	public ShadersGroup (final PackageReaderInput input, final RedFokkerShaders redFokkerShaders) throws IOException {
 		final File package_root_file = input.packageRootFile;
@@ -25,7 +30,7 @@ public class ShadersGroup {
 			final ID asset_id = Names.newID(shader.shader_id);
 			final String shader_folder_name = shader.shader_folder_name;
 			final File shader_folder = file.parent().child(shader_folder_name);
-			final ShaderEntry entry = new ShaderEntry(asset_id, shader, shader_folder, file_container);
+			final ShaderEntry entry = new ShaderEntry(asset_id, shader, shader_folder, file_container, this);
 			container.addAsset(asset_id, entry);
 			redFokkerShaders.register(asset_id, entry);
 		}
@@ -37,6 +42,13 @@ public class ShadersGroup {
 		} catch (final IOException e) {
 			e.printStackTrace();
 			throw new IOException("Failed to read " + file, e);
+		}
+	}
+
+	@Override
+	public void dispose () {
+		for (final ShaderEntry e : this.list) {
+			e.dispose();
 		}
 	}
 
