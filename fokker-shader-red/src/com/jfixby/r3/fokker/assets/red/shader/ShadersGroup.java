@@ -12,6 +12,7 @@ import com.jfixby.scarabei.api.assets.ID;
 import com.jfixby.scarabei.api.assets.Names;
 import com.jfixby.scarabei.api.collections.Collections;
 import com.jfixby.scarabei.api.collections.List;
+import com.jfixby.scarabei.api.err.Err;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.io.IO;
 
@@ -49,6 +50,8 @@ public class ShadersGroup implements AssetsGroup {
 		for (final ShaderEntry e : this.list) {
 			e.dispose();
 		}
+
+		Err.throwNotImplementedYet();// dispose from regisrty?
 	}
 
 }
